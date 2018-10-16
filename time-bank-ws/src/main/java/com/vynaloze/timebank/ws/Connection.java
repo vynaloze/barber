@@ -1,7 +1,5 @@
 package com.vynaloze.timebank.ws;
 
-import com.vynaloze.timebank.common.Request;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,11 +26,13 @@ public class Connection {
                 String inputLine, outputLine;
 
                 out.println("Connected.");
+                System.out.println("Client connected.");
 
                 while ((inputLine = in.readLine()) != null) {
-                    outputLine = controller.process(inputLine);
+                    Response response = controller.process(inputLine);
+                    outputLine = response.getResponse();
                     out.println(outputLine);
-                    if (outputLine.equals(Request.Type.DROP.toString())) {
+                    if (outputLine.equals("DROP")) { //fixme
                         break;
                     }
                 }

@@ -1,7 +1,5 @@
 package com.vynaloze.timebank.client;
 
-import com.vynaloze.timebank.common.Request;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,7 +23,7 @@ public class Main {
 
             while ((fromServer = in.readLine()) != null) {
                 System.out.println(">>>" + fromServer);
-                if (fromServer.equals(Request.Type.DROP.toString())) {
+                if (fromServer.equals("DROP")) { //fixme
                     break;
                 }
 

@@ -10,7 +10,8 @@ public class Main {
         int portNumber = 8080;
         boolean listening = true;
         List<Connection> connections = new ArrayList<>();
-        Controller controller = new Controller();
+        Dao dao = new DaoImpl();
+        Controller controller = new Controller(dao);
 
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
             while (listening) {
