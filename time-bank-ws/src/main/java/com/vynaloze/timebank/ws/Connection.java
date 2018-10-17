@@ -26,6 +26,7 @@ public class Connection {
                 String inputLine, outputLine;
 
                 out.println("Connected.");
+                out.println("Second.");
                 System.out.println("Client connected.");
 
                 while ((inputLine = in.readLine()) != null) {

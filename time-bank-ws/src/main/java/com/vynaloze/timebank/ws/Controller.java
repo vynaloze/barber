@@ -4,6 +4,7 @@ import com.vynaloze.timebank.common.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Controller {
     private final Dao dao;
@@ -47,12 +48,8 @@ public class Controller {
     }
 
     private String get() {
-        List<Service> services = dao.getAll();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Service service : services) {
-            stringBuilder.append(service).append(System.getProperty("line.separator"));
-        }
-        return stringBuilder.toString();
+        List<String> services = dao.getAll().stream().map(Service::toString).collect(Collectors.toList());
+        return String.join(System.getProperty("line.separator"), services);
     }
 
     private String post(String[] request) {

@@ -18,21 +18,17 @@ public class Main {
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-            String fromServer;
-            String fromUser;
+            PrintWriter stdOut = new PrintWriter(System.out, true);
 
-            while ((fromServer = in.readLine()) != null) {
-                System.out.println(">>>" + fromServer);
-                if (fromServer.equals("DROP")) { //fixme
-                    break;
-                }
+            Thread t1 = new Thread(new SocketReader(in, stdOut));
+            t1.setDaemon(true);
+            t1.start();
+            Thread t2 = new Thread(new SocketWriter(stdIn, out));
+            t2.setDaemon(true);
+            t2.start();
 
-                fromUser = stdIn.readLine();
-                if (fromUser != null) {
-                    System.out.println("<<<" + fromUser);
-                    out.println(fromUser);
-                }
-            }
+            while(true);
+
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);
