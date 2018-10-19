@@ -1,11 +1,11 @@
-package com.vynaloze.timebank.ws;
+package com.vynaloze.timebank.common;
 
 public enum Command {
     GET(1), POST(5), RESERVE(3), DELETE(2), DROP(1), INVALID(0);
 
-    private int requestLength;
+    private final int requestLength;
 
-    Command(int requestLength) {
+    Command(final int requestLength) {
         this.requestLength = requestLength;
     }
 

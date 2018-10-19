@@ -1,4 +1,4 @@
-package com.vynaloze.timebank.ws;
+package com.vynaloze.timebank.ws.dao;
 
 public class ServiceAlreadyReservedException extends Exception {
 }

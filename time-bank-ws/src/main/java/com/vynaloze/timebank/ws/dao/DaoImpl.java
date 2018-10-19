@@ -1,12 +1,12 @@
-package com.vynaloze.timebank.ws;
+package com.vynaloze.timebank.ws.dao;
 
-import com.vynaloze.timebank.common.Service;
+import com.vynaloze.timebank.ws.pojo.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DaoImpl implements Dao {
-    private List<Service> services = new ArrayList<>();
+    private final List<Service> services = new ArrayList<>();
 
     @Override
     public List<Service> getAll() {
@@ -14,7 +14,7 @@ public class DaoImpl implements Dao {
     }
 
     @Override
-    public synchronized Service postService(Service service) {
+    public synchronized Service postService(final Service service) {
         if (!services.contains(service)) {
             services.add(service);
         }
@@ -22,8 +22,8 @@ public class DaoImpl implements Dao {
     }
 
     @Override
-    public synchronized Service reserveService(int id, String user) throws ServiceNotFoundException, ServiceAlreadyReservedException {
-        for (Service service : services) {
+    public synchronized Service reserveService(final int id, final String user) throws ServiceNotFoundException, ServiceAlreadyReservedException {
+        for (final Service service : services) {
             if (service.getId() == id) {
                 if (service.getPrincipal() != null) {
                     throw new ServiceAlreadyReservedException();
@@ -36,8 +36,8 @@ public class DaoImpl implements Dao {
     }
 
     @Override
-    public synchronized Service deleteService(int id) throws ServiceNotFoundException {
-        for (Service service : services) {
+    public synchronized Service deleteService(final int id) throws ServiceNotFoundException {
+        for (final Service service : services) {
             if (service.getId() == id) {
                 services.remove(service);
                 return service;

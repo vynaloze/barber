@@ -1,6 +1,10 @@
 package com.vynaloze.timebank.ws;
 
-import com.vynaloze.timebank.common.Service;
+import com.vynaloze.timebank.ws.dao.Dao;
+import com.vynaloze.timebank.ws.dao.DaoImpl;
+import com.vynaloze.timebank.ws.dao.ServiceAlreadyReservedException;
+import com.vynaloze.timebank.ws.dao.ServiceNotFoundException;
+import com.vynaloze.timebank.ws.pojo.Service;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,6 +1,6 @@
-package com.vynaloze.timebank.ws;
+package com.vynaloze.timebank.ws.dao;
 
-import com.vynaloze.timebank.common.Service;
+import com.vynaloze.timebank.ws.pojo.Service;
 
 import java.util.List;
 

@@ -1,4 +1,7 @@
-package com.vynaloze.timebank.ws;
+package com.vynaloze.timebank.ws.controller;
+
+import com.vynaloze.timebank.common.Command;
+import com.vynaloze.timebank.ws.pojo.Response;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,10 +13,10 @@ public class Connection {
     private final Socket socket;
     private final Controller controller;
 
-    public Connection(Socket socket, Controller controller) {
+    public Connection(final Socket socket, final Controller controller) {
         this.socket = socket;
         this.controller = controller;
-        Thread thread = new Thread(new Runner());
+        final Thread thread = new Thread(new Runner());
         thread.setDaemon(true);
         thread.start();
     }
@@ -21,24 +24,23 @@ public class Connection {
     private class Runner implements Runnable {
         @Override
         public void run() {
-            try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+            try (final PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                 final BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
                 String inputLine, outputLine;
 
                 out.println("Connected.");
-                out.println("Second.");
                 System.out.println("Client connected.");
 
                 while ((inputLine = in.readLine()) != null) {
-                    Response response = controller.process(inputLine);
+                    final Response response = controller.process(inputLine);
                     outputLine = response.getResponse();
                     out.println(outputLine);
-                    if (outputLine.equals("DROP")) { //fixme
+                    if (outputLine.equalsIgnoreCase(Command.DROP.toString())) {
                         break;
                     }
                 }
                 socket.close();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
         }

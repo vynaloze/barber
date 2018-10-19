@@ -9,30 +9,31 @@ import java.net.UnknownHostException;
 
 public class Main {
 
-    public static void main(String[] args) {
-        String hostName = "localhost";
-        int portNumber = 8080;
+    public static void main(final String[] args) {
+        final String hostName = "localhost"; //todo
+        final int portNumber = 8080;
 
-        try (Socket socket = new Socket(hostName, portNumber);
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+        try (final Socket socket = new Socket(hostName, portNumber);
+             final BufferedReader socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             final PrintWriter socketOut = new PrintWriter(socket.getOutputStream(), true);
+             final BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+             final PrintWriter stdOut = new PrintWriter(System.out, true)) {
 
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-            PrintWriter stdOut = new PrintWriter(System.out, true);
+            final Thread reader = new Thread(new SocketReader(socketIn, stdOut));
+            reader.setDaemon(true);
+            reader.start();
+            final Thread writer = new Thread(new SocketWriter(stdIn, socketOut));
+            writer.setDaemon(true);
+            writer.start();
 
-            Thread t1 = new Thread(new SocketReader(in, stdOut));
-            t1.setDaemon(true);
-            t1.start();
-            Thread t2 = new Thread(new SocketWriter(stdIn, out));
-            t2.setDaemon(true);
-            t2.start();
+            while (true) {
+                ;
+            }
 
-            while(true);
-
-        } catch (UnknownHostException e) {
+        } catch (final UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             System.err.println("Couldn't get I/O for the connection to " +
                     hostName);
             System.exit(1);

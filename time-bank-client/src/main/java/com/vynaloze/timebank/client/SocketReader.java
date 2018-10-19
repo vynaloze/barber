@@ -1,17 +1,19 @@
 package com.vynaloze.timebank.client;
 
+import com.vynaloze.timebank.common.Command;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 public class SocketReader implements Runnable {
-    private BufferedReader in;
-    private PrintWriter out;
+    private final BufferedReader in;
+    private final PrintWriter out;
 
-    public SocketReader(BufferedReader in, PrintWriter out) {
+    public SocketReader(final BufferedReader in, final PrintWriter out) {
         this.in = in;
         this.out = out;
-    } //fixme -> some generics maybe?
+    }
 
     @Override
     public void run() {
@@ -19,11 +21,11 @@ public class SocketReader implements Runnable {
         try {
             while ((input = in.readLine()) != null) {
                 out.println(">>>" + input);
-                if (input.equals("DROP")) { //fixme
+                if (input.equalsIgnoreCase(Command.DROP.toString())) {
                     System.exit(0);
                 }
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
     }

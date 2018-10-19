@@ -1,4 +1,4 @@
-package com.vynaloze.timebank.ws;
+package com.vynaloze.timebank.ws.pojo;
 
 import javax.annotation.Nonnull;
 

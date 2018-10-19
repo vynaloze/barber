@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class SocketWriter implements Runnable {
-    private BufferedReader in;
-    private PrintWriter out;
+    private final BufferedReader in;
+    private final PrintWriter out;
 
-    public SocketWriter(BufferedReader in, PrintWriter out) {
+    public SocketWriter(final BufferedReader in, final PrintWriter out) {
         this.in = in;
         this.out = out;
     }
@@ -21,7 +21,7 @@ public class SocketWriter implements Runnable {
                 System.out.println("<<<" + input);
                 out.println(input);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
     }

@@ -1,4 +1,4 @@
-package com.vynaloze.timebank.common;
+package com.vynaloze.timebank.ws.pojo;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -36,6 +36,7 @@ public class Service {
         this.date = service.getDate();
         this.title = service.getTitle();
         this.details = service.getDetails();
+        this.principal = service.getPrincipal();
     }
 
     public int getId() {
@@ -67,7 +68,7 @@ public class Service {
         return principal;
     }
 
-    public void setPrincipal(@Nullable String principal) {
+    public void setPrincipal(@Nullable final String principal) {
         this.principal = principal;
     }
 
@@ -81,7 +82,7 @@ public class Service {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -89,7 +90,7 @@ public class Service {
             return false;
         }
 
-        Service service = (Service) o;
+        final Service service = (Service) o;
 
         if (id != service.id) {
             return false;
