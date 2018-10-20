@@ -20,6 +20,10 @@ public class BroadcasterReader implements Runnable {
         while (true) {
             broadcastedLine = broadcaster.getMessage(id);
             broadcastedLine.ifPresent(out::println);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+            }
         }
     }
 }

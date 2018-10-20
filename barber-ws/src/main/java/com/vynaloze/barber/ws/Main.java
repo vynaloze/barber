@@ -12,16 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+    private final static int portNumber = 8080;
+    private final static List<Connection> connections = new ArrayList<>();
+    private final static Dao dao = new DaoImpl();
+    private final static Controller controller = new Controller(dao, 0);
+    private final static Controller retardedController = new Controller(dao, 15000);
+    private final static Broadcaster broadcaster = new Broadcaster();
+
     public static void main(final String[] args) throws Exception {
-        final int portNumber = 8080;
-        final List<Connection> connections = new ArrayList<>();
-        final Dao dao = new DaoImpl();
-        final Controller controller = new Controller(dao);
-        final Broadcaster broadcaster = new Broadcaster();
+        int counter = 1;
 
         try (final ServerSocket serverSocket = new ServerSocket(portNumber)) {
             while (true) {
+                //if (counter % 3 == 0) {
                 connections.add(new Connection(serverSocket.accept(), controller, broadcaster));
+//                } else {
+                connections.add(new Connection(serverSocket.accept(), retardedController, broadcaster));
+//                }
+//                counter++;
             }
         } catch (final IOException e) {
             System.err.println("Could not listen on port " + portNumber);

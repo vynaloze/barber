@@ -25,7 +25,7 @@ public class Connection {
         this.broadcaster.addClient(id);
 
         final Thread thread = new Thread(new Runner());
-        thread.setDaemon(true);
+//        thread.setDaemon(true);
         thread.start();
     }
 

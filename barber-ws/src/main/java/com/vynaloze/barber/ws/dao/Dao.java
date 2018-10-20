@@ -7,9 +7,7 @@ import java.util.List;
 public interface Dao {
     List<Appointment> getAll();
 
-    Appointment getByHour(int hour) throws AppointmentNotFoundException;
+    Appointment reserve(int hour, String client, long sleep) throws AppointmentNotFoundException, AppointmentAlreadyReservedException, LockTimeoutException;
 
-    Appointment reserve(int hour, String client) throws AppointmentNotFoundException, AppointmentAlreadyReservedException;
-
-    Appointment cancel(int hour) throws AppointmentNotFoundException;
+    Appointment cancel(int hour) throws AppointmentNotFoundException, LockTimeoutException;
 }

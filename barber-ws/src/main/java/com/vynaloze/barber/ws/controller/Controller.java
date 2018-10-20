@@ -4,6 +4,7 @@ import com.vynaloze.barber.common.Command;
 import com.vynaloze.barber.ws.dao.AppointmentAlreadyReservedException;
 import com.vynaloze.barber.ws.dao.AppointmentNotFoundException;
 import com.vynaloze.barber.ws.dao.Dao;
+import com.vynaloze.barber.ws.dao.LockTimeoutException;
 import com.vynaloze.barber.ws.pojo.Appointment;
 import com.vynaloze.barber.ws.pojo.Response;
 
@@ -12,9 +13,11 @@ import java.util.stream.Collectors;
 
 public class Controller {
     private final Dao dao;
+    private final long sleep;
 
-    public Controller(final Dao dao) {
+    public Controller(Dao dao, long sleep) {
         this.dao = dao;
+        this.sleep = sleep;
     }
 
     public Response process(final String request) {
@@ -27,11 +30,11 @@ public class Controller {
 
         switch (command) {
             case GET:
-                return new Response(get(), false);
+                return get();
             case RESERVE:
-                return new Response(reserve(splitted), true);
+                return reserve(splitted);
             case CANCEL:
-                return new Response(delete(splitted), true);
+                return cancel(splitted);
             case DROP:
                 return new Response(Command.DROP.toString(), false);
         }
@@ -49,24 +52,28 @@ public class Controller {
         return Command.INVALID;
     }
 
-    private String get() {
+    private Response get() {
         final List<String> services = dao.getAll().stream().map(Appointment::toString).collect(Collectors.toList());
-        return String.join(System.getProperty("line.separator"), services);
+        return new Response(String.join(System.getProperty("line.separator"), services), false);
     }
 
-    private String reserve(final String[] request) {
+    private Response reserve(final String[] request) {
         try {
-            return dao.reserve(Integer.valueOf(request[1]), request[2]).toString();
-        } catch (final AppointmentNotFoundException | AppointmentAlreadyReservedException e) {
-            return e.toString();
+            String appointment = dao.reserve(Integer.valueOf(request[1]), request[2], sleep).toString();
+            String prefix = "RESERVED ";
+            return new Response(prefix + appointment, true);
+        } catch (final AppointmentNotFoundException | AppointmentAlreadyReservedException | LockTimeoutException e) {
+            return new Response(e.getClass().getSimpleName(), false);
         }
     }
 
-    private String delete(final String[] request) {
+    private Response cancel(final String[] request) {
         try {
-            return dao.cancel(Integer.valueOf(request[1])).toString();
-        } catch (final AppointmentNotFoundException e) {
-            return e.toString();
+            String appointment = dao.cancel(Integer.valueOf(request[1])).toString();
+            String prefix = "CANCELLED ";
+            return new Response(prefix + appointment, true);
+        } catch (final AppointmentNotFoundException | LockTimeoutException e) {
+            return new Response(e.getClass().getSimpleName(), false);
         }
     }
 }

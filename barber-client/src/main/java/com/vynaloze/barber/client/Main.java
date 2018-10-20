@@ -22,12 +22,18 @@ public class Main {
             final Thread reader = new Thread(new SocketReader(socketIn, stdOut));
             reader.setDaemon(true);
             reader.start();
-            final Thread writer = new Thread(new SocketWriter(stdIn, socketOut));
-            writer.setDaemon(true);
-            writer.start();
+//            final Thread writer = new Thread(new SocketWriter(stdIn, socketOut));
+//            writer.setDaemon(true);
+//            writer.start();
 
-            while (true) {
-                ;
+            String input;
+            try {
+                while ((input = stdIn.readLine()) != null) {
+                    System.out.println("<<<" + input);
+                    socketOut.println(input);
+                }
+            } catch (final IOException e) {
+                e.printStackTrace();
             }
 
         } catch (final UnknownHostException e) {
