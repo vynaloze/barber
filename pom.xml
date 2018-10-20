@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.vynaloze</groupId>
-    <artifactId>time-bank</artifactId>
+    <artifactId>barber</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>time-bank-ws</module>
-        <module>time-bank-client</module>
-        <module>time-bank-common</module>
+        <module>barber-ws</module>
+        <module>barber-client</module>
+        <module>barber-common</module>
     </modules>
 
     <build>
