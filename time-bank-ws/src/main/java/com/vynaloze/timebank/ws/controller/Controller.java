@@ -36,7 +36,7 @@ public class Controller {
             case DELETE:
                 return new Response(delete(splitted), true);
             case DROP:
-                return new Response("DROP", false); //fixme
+                return new Response(Command.DROP.toString(), false);
         }
         return new Response("Oops... This should never happen.", false);
     }

@@ -30,15 +30,6 @@ public class Service {
         this.details = details;
     }
 
-    public Service(@Nonnull final Service service) {
-        this.id = service.getId();
-        this.contractor = service.getContractor();
-        this.date = service.getDate();
-        this.title = service.getTitle();
-        this.details = service.getDetails();
-        this.principal = service.getPrincipal();
-    }
-
     public int getId() {
         return id;
     }

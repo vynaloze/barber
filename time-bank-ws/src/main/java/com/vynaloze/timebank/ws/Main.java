@@ -1,5 +1,6 @@
 package com.vynaloze.timebank.ws;
 
+import com.vynaloze.timebank.ws.controller.Broadcaster;
 import com.vynaloze.timebank.ws.controller.Connection;
 import com.vynaloze.timebank.ws.controller.Controller;
 import com.vynaloze.timebank.ws.dao.Dao;
@@ -13,15 +14,14 @@ import java.util.List;
 public class Main {
     public static void main(final String[] args) throws Exception {
         final int portNumber = 8080;
-        final boolean listening = true;
         final List<Connection> connections = new ArrayList<>();
         final Dao dao = new DaoImpl();
         final Controller controller = new Controller(dao);
+        final Broadcaster broadcaster = new Broadcaster();
 
         try (final ServerSocket serverSocket = new ServerSocket(portNumber)) {
-            while (listening) {
-                connections.add(new Connection(serverSocket.accept(), controller));
-                System.out.println("d");
+            while (true) {
+                connections.add(new Connection(serverSocket.accept(), controller, broadcaster));
             }
         } catch (final IOException e) {
             System.err.println("Could not listen on port " + portNumber);

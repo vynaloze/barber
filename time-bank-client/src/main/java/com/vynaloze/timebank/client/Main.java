@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 public class Main {
 
     public static void main(final String[] args) {
-        final String hostName = "localhost"; //todo
+        final String hostName = "localhost";
         final int portNumber = 8080;
 
         try (final Socket socket = new Socket(hostName, portNumber);
@@ -34,8 +34,7 @@ public class Main {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);
         } catch (final IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " +
-                    hostName);
+            System.err.println("Couldn't get I/O for the connection to " + hostName);
             System.exit(1);
         }
     }
