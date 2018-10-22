@@ -9,12 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>barber-client</artifactId>
+    <artifactId>barber-tester</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.vynaloze</groupId>
-            <artifactId>barber-common</artifactId>
+            <artifactId>barber-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
@@ -33,7 +33,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>com.vynaloze.barber.client.Application</mainClass>
+                                    <mainClass>com.vynaloze.barber.tester.Main</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
@@ -45,5 +45,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>

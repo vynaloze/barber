@@ -12,6 +12,7 @@
         <module>barber-ws</module>
         <module>barber-client</module>
         <module>barber-common</module>
+        <module>barber-tester</module>
     </modules>
 
     <build>

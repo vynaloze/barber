@@ -20,16 +20,16 @@ public class Main {
     private final static Broadcaster broadcaster = new Broadcaster();
 
     public static void main(final String[] args) throws Exception {
-        int counter = 1;
+        int counter = 0;
 
         try (final ServerSocket serverSocket = new ServerSocket(portNumber)) {
             while (true) {
-                //if (counter % 3 == 0) {
-                connections.add(new Connection(serverSocket.accept(), controller, broadcaster));
-//                } else {
-                connections.add(new Connection(serverSocket.accept(), retardedController, broadcaster));
-//                }
-//                counter++;
+                if (counter % 3 == 0) {
+                    connections.add(new Connection(serverSocket.accept(), controller, broadcaster));
+                } else {
+                    connections.add(new Connection(serverSocket.accept(), retardedController, broadcaster));
+                }
+                counter++;
             }
         } catch (final IOException e) {
             System.err.println("Could not listen on port " + portNumber);
