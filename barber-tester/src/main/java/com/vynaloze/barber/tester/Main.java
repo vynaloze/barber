@@ -4,20 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    private final static int CLIENTS = 2;
-    private static final String HOST = "localhost";
-    private static final int PORT = 8080;
+    private final static int CLIENTS = 3;
+    private static final long DURATION = 180_000;
 
     public static void main(String[] args) throws Exception {
-        List<Tester> testers = new ArrayList<>();
+        final List<Tester> testers = new ArrayList<>();
         for (int i = 0; i < CLIENTS; i++) {
-            testers.add(new Tester());
+            final Tester tester = new Tester();
+            testers.add(tester);
+            final Thread thread = new Thread(tester);
+            thread.start();
         }
 
-        while (true) {
-
-            System.out.println(testers.get(0).foo());
-            Thread.sleep(1000);
+        final long start = System.currentTimeMillis();
+        while (System.currentTimeMillis() - start < DURATION) {
+            System.out.println("\033[H\033[2J");
+            final int maxLength = testers.stream().map(t -> t.getLines().length).max(Integer::compareTo).get();
+            for (int i = maxLength - 1; i >= 0; i--) {
+                for (final Tester tester : testers) {
+                    final String[] lines = tester.getLines();
+                    if (i < lines.length) {
+                        System.out.printf("%-60.60s ", lines[i]);
+                    } else {
+                        System.out.printf("%-60.60s ", "");
+                    }
+                }
+                System.out.println();
+            }
+            Thread.sleep(2_000);
         }
+        System.exit(0);
     }
 }

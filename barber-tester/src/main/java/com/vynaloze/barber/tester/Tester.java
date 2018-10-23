@@ -1,46 +1,41 @@
 package com.vynaloze.barber.tester;
 
 import com.vynaloze.barber.client.Client;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.LinkedList;
-import java.util.List;
 
-public class Tester {
-    private Client client;
-    StringWriter out;
-    private List<String> output = new LinkedList<>();
+public class Tester implements Runnable {
+    private final Client client;
+    private final StringWriter out;
+    private static final String HOST = "localhost";
+    private static final int PORT = 8080;
 
     public Tester() {
-        out = new StringWriter();
-        PrintWriter writer = new PrintWriter(out);
+        this.out = new StringWriter();
+        final PrintWriter writer = new PrintWriter(out);
+
         this.client = new Client(writer);
-        client.connect("localhost", 8080);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    client.send(RandomRequests.random());
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        client.connect(HOST, PORT);
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            final int oldLength = getLines().length;
+            final long start = System.currentTimeMillis();
+            client.send(RandomRequests.random());
+            while (System.currentTimeMillis() - start < 10_000
+                    || oldLength == getLines().length) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        }).start();
+        }
     }
 
-    public String getOutput() {
-        return String.join(System.getProperty("line.separator"), output);
-    }
-
-    public void addToOutput(String string) {
-        output.add(string);
-    }
-
-    public String foo() {
-        return "\033[H\033[2J" + out.toString();
+    public String[] getLines() {
+        return out.toString().split("\\r?\\n");
     }
 }

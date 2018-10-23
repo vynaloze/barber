@@ -5,7 +5,6 @@ import com.vynaloze.barber.ws.controller.Connection;
 import com.vynaloze.barber.ws.controller.Controller;
 import com.vynaloze.barber.ws.dao.Dao;
 import com.vynaloze.barber.ws.dao.DaoImpl;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class Main {
     private final static List<Connection> connections = new ArrayList<>();
     private final static Dao dao = new DaoImpl();
     private final static Controller controller = new Controller(dao, 0);
-    private final static Controller retardedController = new Controller(dao, 15000);
+    private final static Controller retardedController = new Controller(dao, 30_000);
     private final static Broadcaster broadcaster = new Broadcaster();
 
     public static void main(final String[] args) throws Exception {

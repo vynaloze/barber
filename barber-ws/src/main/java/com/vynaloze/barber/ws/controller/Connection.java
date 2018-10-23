@@ -2,7 +2,6 @@ package com.vynaloze.barber.ws.controller;
 
 import com.vynaloze.barber.common.Command;
 import com.vynaloze.barber.ws.pojo.Response;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,7 +24,6 @@ public class Connection {
         this.broadcaster.addClient(id);
 
         final Thread thread = new Thread(new Runner());
-//        thread.setDaemon(true);
         thread.start();
     }
 
@@ -39,7 +37,7 @@ public class Connection {
                 out.println("Connected.");
                 System.out.println("Client connected.");
 
-                Thread broadcasterReader = new Thread(new BroadcasterReader(broadcaster, id, out));
+                final Thread broadcasterReader = new Thread(new BroadcasterReader(broadcaster, id, out));
                 broadcasterReader.setDaemon(true);
                 broadcasterReader.start();
 
@@ -47,7 +45,7 @@ public class Connection {
                     final Response response = controller.process(inputLine);
                     outputLine = response.getResponse();
                     if (response.isBroadcast()) {
-                        broadcaster.pushMessage(outputLine);
+                        broadcaster.pushMessage(">>>" + outputLine);
                     } else {
                         out.println(outputLine);
                     }
